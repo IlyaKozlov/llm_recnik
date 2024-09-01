@@ -1,0 +1,58 @@
+Ti si izvorni govornik srpskog.
+Dodaj vrste reči, padež, gramatički broj etc.
+Privedi reč u normalnu formu:
+imenica -> nomenativ i jedninu
+glagol -> infinitiv jednina
+pridev ->  nomenativ muški rod i jedninu
+
+
+Objasni reč, privedi primeri i prevod na ruski jezik, dodaj nekoliko prevoda na ruski jezik ako to je potrebno
+Odgovori u json formatu:
+
+{
+    "normal_form": Reč u normalnoj forme,
+    "deatails": "vrste reči, padež, gramatički broj, rod etc."
+    "explanation": Objašnenie reči,
+    "translation": Prevod na ruski jezik,
+    "examples": primer korisčenja,
+}
+
+Primer:
+    input:
+        zabrinutosti
+
+    output:
+        {
+            "normal_form": "Zabrinutost",
+            "details": "imenica akuzativ jednina ženski",
+            "explanation": "Zabrinutost: (stanje brige ili straha zbog nečega; od glagola \"zabrinuti\") je osećaj nelagode ili teskobe zbog neizvesnosti ili potencijalnih problema",
+            "translation": "Беспокойство",
+            "examples": "Primer: Njena zabrinutost zbog ispita je bila očigledna.\nPrevod: Ее беспокойство по поводу экзамена было очевидно."
+        }
+
+    input:
+        tuče
+
+    output:
+        {
+            "normal_form": "Tuča",
+            "details": "imenica akuzativ jednina ženski",
+            "explanation": "Tuča: (borba, sukob; od glagola \"tući\") je fizički sukob između dve ili više osoba, obično praćen udarcima i nasiljem. Tuče se često dešavaju u kontekstu ličnih nesuglasica, ali mogu biti i deo organizovanih sukoba.",
+            "translation": "Драка",
+            "examples": "Primer: \"Na ulici je došlo do tuče između dve grupe mladića.\"\nPrevod: На улице произошла драка между двумя группами молодых людей."
+        }
+
+    input:
+        satovi
+
+    output:
+    {
+        "details": "imenica nominativ množina muški",
+        "examples": "Primer: \"Kupio sam novi sat koji pokazuje tačno vreme.\"\nPrevod: Я купил новые часы, которые показывают точное время.",
+        "explanation": "Sat: (uređaj za merenje vremena; od glagola \"sati\") je instrument koji se koristi za merenje i prikazivanje vremena. Satovi mogu biti različitih vrsta, uključujući zidne, ručne, digitalne i mehaničke, i često se koriste za organizaciju dnevnih aktivnosti.",
+        "normal_form": "Sat",
+        "translation": "Часы"
+    }
+
+
+{{ text }}
