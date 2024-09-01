@@ -1,25 +1,22 @@
 import json
+import os
 from json import JSONDecodeError
 from pathlib import Path
 from pprint import pprint
 
-from dotenv import dotenv_values
 from jinja2 import Template
 from langchain_openai import ChatOpenAI
 
-config_path = Path(__file__).parent.parent / ".env"
-config = dotenv_values(config_path)
 
-api_key = config["OPENAI_API_KEY"]
+api_key = os.getenv("OPENAI_API_KEY")
 
 llm = ChatOpenAI(api_key=api_key, model="gpt-4o-mini")
 
-template_path = "templates/dictionary.jinja"
+template_path = Path(__file__).parent / "templates/dictionary.jinja"
 
 with open(template_path) as file_:
     template = Template(file_.read())
 
-template_path = "templates/fix_json.jinja"
 
 with open(template_path) as file_:
     json_template = Template(file_.read())
