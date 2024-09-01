@@ -30,6 +30,12 @@ def root() -> HTMLResponse:
         return HTMLResponse(content=file.read())
 
 
+@app.get("/mascot.jpg")
+def get_mascot() -> FileResponse:
+    path = directory_path / "mascot.jpg"
+    return FileResponse(path=path)
+
+
 @app.get("/translate")
 def list_models(word: str) -> HTMLResponse:
     result = get_translation(word)
