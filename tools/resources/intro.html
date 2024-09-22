@@ -8,13 +8,17 @@
 <body>
 <h1>LLM Rečnik</h1>
 
-<form action="/translate" method="GET">
-    <label for="word">Reč:</label>
-    <input type="text" id="word" name="word" required>
-    <br><br>
+<p> Ako želiš da proveriš text ide <a href="/check_form" target="_blank">ovde</a> </p>
 
-    <input type="submit" value="prevesti">
-</form>
+<p>
+    <form action="/translate" method="GET">
+        <label for="word">Reč:</label>
+        <input type="text" id="word" name="word" required>
+        <br><br>
+
+        <input type="submit" value="prevesti">
+    </form>
+</p>
 <p></p>
 <img src="/mascot.jpg"style="width:190px;height:190`px;">
 </body>
