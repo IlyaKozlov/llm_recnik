@@ -3,7 +3,7 @@ from json import JSONDecodeError
 
 from jinja2 import Template
 
-from base_llm import BaseLLM
+from llm_tools.base_llm import BaseLLM
 
 
 class ErrorFixing(BaseLLM):

@@ -15,7 +15,7 @@ class LLMResponse(BaseModel):
 class BaseLLM(ABC):
     price_input = 0.150 / 1e6  # price for input token
     price_output = 0.600 / 1e6
-    prompt_path = Path(__file__).parent / "templates"
+    prompt_path = Path(__file__).parent.parent / "templates"
     assert prompt_path.is_dir()
 
     def __init__(self, api_key: str):
@@ -31,10 +31,10 @@ class BaseLLM(ABC):
         print(f"${price * 1000:0.2f} for 1000 calls \n\n\n")
         return LLMResponse(content=result.content, price=price)
 
-    def fix_json(self, input_text: str, error: str) -> LLMResponse:
+    def fix_json(self, input_text: str, error: str, schema: str) -> LLMResponse:
         template_path = self.prompt_path / "fix_json.jinja"
         with open(template_path, "r") as file:
             template = Template(file.read())
-        prompt = template.render(json=input_text, error=error)
+        prompt = template.render(json=input_text, error=error, schema=schema)
         return self.call_llm(prompt)
 

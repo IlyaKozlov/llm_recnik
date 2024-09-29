@@ -1,14 +1,14 @@
 import json
-from json import JSONDecodeError
 
 from jinja2 import Template
 
-from base_llm import BaseLLM
+from datatypes.translate_response import TranslateResponse
+from llm_tools.base_llm import BaseLLM
 
 
 class Translator(BaseLLM):
 
-    def translate(self, text: str) -> dict:
+    def translate(self, text: str) -> TranslateResponse:
         path = self.prompt_path / "dictionary.jinja"
         with open(path, "r") as file:
             template = Template(file.read())
@@ -17,8 +17,12 @@ class Translator(BaseLLM):
         price = result.price
         try:
             json.loads(result.content)
-        except JSONDecodeError as error:
+        except ValueError as error:
             print(f"try to fix json {error}")
-            result = self.fix_json(result.content, error=str(error))
+            result = self.fix_json(
+                result.content,
+                error=str(error),
+                schema=TranslateResponse.schema_json(indent=2),
+            )
             price += result.price
-        return json.loads(result.content)
+        return TranslateResponse.model_validate_json(result.content)

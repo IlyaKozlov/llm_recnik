@@ -8,8 +8,8 @@ from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from jinja2 import Template
 
-from error_fixing import ErrorFixing
-from translator import Translator
+from llm_tools.error_fixing import ErrorFixing
+from llm_tools.translator import Translator
 from token_utils import check_access
 
 PORT = os.getenv("api_port", 8924)
@@ -84,10 +84,10 @@ def translate(word: str, secret: Optional[str] = None) -> HTMLResponse:
         template = Template(file.read())
 
     return HTMLResponse(template.render(word=word,
-                                        norm=result["normal_form"],
-                                        explanation=result["explanation"],
-                                        translation=result["translation"],
-                                        example=result["examples"]
+                                        norm=result.normal_form,
+                                        explanation=result.explanation,
+                                        translation=result.translation,
+                                        example=result.examples
                                         ))
 
 
