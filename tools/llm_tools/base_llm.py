@@ -16,6 +16,9 @@ class BaseLLM(ABC):
     price_input = 0.150 / 1e6  # price for input token
     price_output = 0.600 / 1e6
     prompt_path = Path(__file__).parent.parent / "templates"
+    prompt_latin = prompt_path / "latin"
+    cyrillic_path = prompt_path / "cyrillic"
+
     assert prompt_path.is_dir()
 
     def __init__(self, api_key: str):
