@@ -8,11 +8,12 @@
 <body>
 <h1>LLM Rečnik</h1>
 
-<p> Ako želiš da proveriš text ide <a href="/check_form" target="_blank">ovde</a> </p>
+<p> Ako želiš da proveriš text ide <a href="/check_form?secret={{secret}}" target="_blank">ovde</a> </p>
 
 <p>
     <form action="/translate" method="GET">
         <label for="word">Reč:</label>
+        <input type="hidden" name="secret" value="{{secret}}" />
         <input type="text" id="word" name="word" required>
         <br><br>
 
