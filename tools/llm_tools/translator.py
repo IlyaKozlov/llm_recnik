@@ -9,7 +9,11 @@ from llm_tools.base_llm import BaseLLM
 class Translator(BaseLLM):
 
     def translate(self, text: str) -> TranslateResponse:
-        path = self.prompt_latin / "dictionary.jinja"
+        if self._is_latin(text):
+            dir_path = self.prompt_latin
+        else:
+            dir_path = self.prompt_cyrillic
+        path = dir_path / "dictionary.jinja"
         with open(path, "r") as file:
             template = Template(file.read())
         prompt = template.render(text=text)

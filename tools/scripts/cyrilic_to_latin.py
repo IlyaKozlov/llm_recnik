@@ -11,7 +11,8 @@ assert latin_path.exists()
 cyrillic_path = template_path / "cyrillic"
 assert cyrillic_path.exists()
 
-for name in os.listdir(latin_path):
-    path = latin_path / name
-    with path.open() as f:
-        print(cyrtranslit.to_cyrillic(f.read(), "sr"))
+for name in os.listdir(cyrillic_path):
+    path = cyrillic_path / name
+    path_out = latin_path / name
+    with path.open() as f, open(path_out, "w") as w:
+        w.write(cyrtranslit.to_latin(f.read(), "sr"))

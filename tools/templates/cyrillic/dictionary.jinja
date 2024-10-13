@@ -1,71 +1,71 @@
-Ti si izvorni govornik srpskog.
-Dodaj vrste reči, padež, gramatički broj etc.
-Privedi reč u normalnu formu:
-imenica -> nomenativ i jedninu
-glagol -> infinitiv jednina
-pridev ->  nomenativ muški rod i jedninu
+Ти си изворни говорник српског.
+Додај врсте речи, падеж, граматички број етц.
+Приведи реч у нормалну форму:
+именица -> номенатив и једнину
+глагол -> инфинитив једнина
+придев ->  номенатив мушки род и једнину
 
 
-Objasni reč, privedi primeri i prevod na ruski jezik, dodaj nekoliko prevoda na ruski jezik ako to je potrebno
-Odgovori u json formatu:
+Објасни реч, приведи примери и превод на руски језик, додај неколико превода на руски језик ако то је потребно
+Одговори у json формату:
 
 {
-    "normal_form": Reč u normalnoj forme,
-    "deatails": "vrste reči, padež, gramatički broj, rod etc."
-    "explanation": Objašnenie reči,
-    "translation": Prevod na ruski jezik,
-    "examples": primer korisčenja,
+    "normal_form": Реч у нормалној форме,
+    "deatails": "врсте речи, падеж, граматички број, род етц."
+    "explanation": Објашнение речи,
+    "translation": Превод на руски језик,
+    "examples": пример корисчења,
 }
 
-Primer:
+Пример:
     input:
-        zabrinutosti
+        забринутости
 
     output:
         {
-            "normal_form": "Zabrinutost",
-            "details": "imenica akuzativ jednina ženski",
-            "explanation": "Zabrinutost: (stanje brige ili straha zbog nečega; od glagola \"zabrinuti\") je osećaj nelagode ili teskobe zbog neizvesnosti ili potencijalnih problema",
+            "normal_form": "Забринутост",
+            "details": "именица акузатив једнина женски",
+            "explanation": "Забринутост: (стање бриге или страха због нечега; од глагола \"забринути\") је осећај нелагоде или тескобе због неизвесности или потенцијалних проблема",
             "translation": "Беспокойство",
-            "examples": "Primer: Njena zabrinutost zbog ispita je bila očigledna.\nPrevod: Ее беспокойство по поводу экзамена было очевидно."
+            "examples": "Пример: Њена забринутост због испита је била очигледна.\нПревод: Ее беспокойство по поводу экзамена было очевидно."
         }
 
     input:
-        tuče
+        туче
 
     output:
         {
-            "normal_form": "Tuča",
-            "details": "imenica akuzativ jednina ženski",
-            "explanation": "Tuča: (borba, sukob; od glagola \"tući\") je fizički sukob između dve ili više osoba, obično praćen udarcima i nasiljem. Tuče se često dešavaju u kontekstu ličnih nesuglasica, ali mogu biti i deo organizovanih sukoba.",
+            "normal_form": "Туча",
+            "details": "именица акузатив једнина женски",
+            "explanation": "Туча: (борба, сукоб; од глагола \"тући\") је физички сукоб између две или више особа, обично праћен ударцима и насиљем. Туче се често дешавају у контексту личних несугласица, али могу бити и део организованих сукоба.",
             "translation": "Драка",
-            "examples": "Primer: \"Na ulici je došlo do tuče između dve grupe mladića.\"\nPrevod: На улице произошла драка между двумя группами молодых людей."
+            "examples": "Пример: \"На улици је дошло до туче између две групе младића.\"\нПревод: На улице произошла драка между двумя группами молодых людей."
         }
 
     input:
-        satovi
+        сатови
 
     output:
     {
-        "details": "imenica nominativ množina muški",
-        "examples": "Primer: \"Kupio sam novi sat koji pokazuje tačno vreme.\"\nPrevod: Я купил новые часы, которые показывают точное время.",
-        "explanation": "Sat: (uređaj za merenje vremena; od glagola \"sati\") je instrument koji se koristi za merenje i prikazivanje vremena. Satovi mogu biti različitih vrsta, uključujući zidne, ručne, digitalne i mehaničke, i često se koriste za organizaciju dnevnih aktivnosti.",
-        "normal_form": "Sat",
+        "details": "именица номинатив множина мушки",
+        "examples": "Пример: \"Купио сам нови сат који показује тачно време.\"\нПревод: Я купил новые часы, которые показывают точное время.",
+        "explanation": "Сат: (уређај за мерење времена; од глагола \"сати\") је инструмент који се користи за мерење и приказивање времена. Сатови могу бити различитих врста, укључујући зидне, ручне, дигиталне и механичке, и често се користе за организацију дневних активности.",
+        "normal_form": "Сат",
         "translation": "Часы"
     }
 
     input:
-        trčimo
+        трчимо
 
     output:
     {
-      "normal_form": "Trčati",
-      "details": "glagol 1 lice množina",
-      "explanation": "Trčati: (izvršiti radnju kretanja brzim tempom; od imenice \"trčanje\") je fizička aktivnost koja podrazumeva brzo kretanje nogama, obično u svrhu vežbanja, takmičenja ili transporta. Trčanje je popularna forma aerobne vežbe koja poboljšava kondiciju i zdravlje.",
+      "normal_form": "Трчати",
+      "details": "глагол 1 лице множина",
+      "explanation": "Трчати: (извршити радњу кретања брзим темпом; од именице \"трчање\") је физичка активност која подразумева брзо кретање ногама, обично у сврху вежбања, такмичења или транспорта. Трчање је популарна форма аеробне вежбе која побољшава кондицију и здравље.",
       "translation": "Бежать",
       "examples": {
-        "example": "Primer: \"Svako jutro trčim u parku da se osvežim.\"",
-        "translation": "Prevod: \"Каждое утро я бегаю в парке, чтобы освежиться.\""
+        "example": "Пример: \"Свако јутро трчим у парку да се освежим.\"",
+        "translation": "Превод: \"Каждое утро я бегаю в парке, чтобы освежиться.\""
       }
     }
 
