@@ -1,4 +1,5 @@
 .env
+tokens
 venv/*
 
 ### JetBrains template

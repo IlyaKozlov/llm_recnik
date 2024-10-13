@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Rečnik</title>
+</head>
+<body>
+<h1>LLM Rečnik</h1>
+
+<form action="/check" method="POST">
+    <p><label for="text">text:</label>
+        <textarea id="text" name="text" cols="45" rows="18" required> </textarea>
+    </p>
+    <br><br>
+    <input type="hidden" name="secret" value="{{secret}}" />
+    <input type="submit" value="check">
+</form>
+<p></p>
+<img src="/mascot.jpg"style="width:190px;height:190`px;">
+</body>
+</html>
