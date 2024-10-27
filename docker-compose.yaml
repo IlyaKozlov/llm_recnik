@@ -1,0 +1,10 @@
+services:
+  recnik:
+    container_name: recnik
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8924}:${PORT:-8924}"

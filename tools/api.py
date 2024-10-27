@@ -12,7 +12,7 @@ from llm_tools.error_fixing import ErrorFixing
 from llm_tools.translator import Translator
 from token_utils import check_access
 
-PORT = os.getenv("api_port", 8924)
+PORT = os.getenv("PORT", 8924)
 app = FastAPI()
 
 directory_path = Path(__file__).parent / "resources"

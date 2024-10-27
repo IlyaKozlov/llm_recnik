@@ -4,6 +4,8 @@ ADD requirements.txt .
 
 RUN pip install -r requirements.txt
 
+ADD inverted_dict.sqlite .
+
 ADD tools /tools
 
 ENV PYTHONPATH=/tools
