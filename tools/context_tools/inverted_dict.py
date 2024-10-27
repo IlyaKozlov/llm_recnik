@@ -13,9 +13,9 @@ class InvertedDict:
         """
         self.path = Path(__file__).parent.parent.parent.absolute() / file_name
         self.conn = sqlite3.connect(self.path)
+        self.conn.execute("CREATE TABLE IF NOT EXISTS kv (key text unique, value text)")
         size = self.conn.execute('SELECT count(*) FROM kv').fetchone()[0]
         print(f"Size of inverted dict is {size}")
-        self.conn.execute("CREATE TABLE IF NOT EXISTS kv (key text unique, value text)")
 
     def close(self):
         self.conn.commit()
