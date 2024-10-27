@@ -34,13 +34,13 @@ class InvertedDict:
             value = [to_latin(v) for v in value]
         return value
 
-    def _put_one(self, key: str, value):
+    def _put_one(self, key: str, value: list):
         key = to_cyrillic(key)
-        value = to_cyrillic(value)
+        value = [to_cyrillic(v) for v in value]
         value = json.dumps(value, ensure_ascii=False)
         self.conn.execute('REPLACE INTO kv (key, value) VALUES (?,?)', (key, value))
 
-    def put(self, key: str, value: str):
+    def put(self, key: str, value: list):
         self._put_one(key, value)
         self.conn.commit()
 

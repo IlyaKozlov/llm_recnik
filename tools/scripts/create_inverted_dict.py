@@ -1,13 +1,14 @@
 import gzip
 import json
 import shutil
+import sys
 
 from tqdm import tqdm
 
 from common.utils import wc, batch
 from context_tools.inverted_dict import InvertedDict
 
-path_in = "/home/padre/datasets/serbian/invert_dict.jsonlines.gz"
+path_in = sys.argv[1]
 
 invert_dict = InvertedDict("inverted_dict.sqlite.part")
 
