@@ -1,6 +1,4 @@
 import json
-import sqlite3
-from pathlib import Path
 
 from common.kv_storage import KVStorage
 from common.utils import to_cyrillic, is_latin, to_latin

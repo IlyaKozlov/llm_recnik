@@ -15,6 +15,11 @@ class KVStorage(abc.ABC):
         """
         self.table_name = table_name
         self.path = Path(__file__).parent.parent.parent.absolute() / file_name
+
+        logger.debug(f"Save {self.table_name} "
+                     f"in file {str(self.path.absolute())}, "
+                     f"file {'not' if self.path.exists() else ''}exists")
+
         self.conn = sqlite3.connect(self.path)
         self.conn.execute(
             f"CREATE TABLE IF NOT EXISTS {self.table_name} (key text unique, value text)"
