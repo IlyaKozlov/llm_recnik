@@ -17,10 +17,20 @@ app = FastAPI()
 
 directory_path = Path(__file__).parent / "resources"
 
-logger = logging.getLogger("converter_logger")
+
 api_key = os.getenv("OPENAI_API_KEY")
 translator = Translator(api_key=api_key)
 error_fix = ErrorFixing(api_key=api_key)
+
+
+logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - [%(levelname)s] - %(message)s",
+        force=True,
+        handlers=[logging.StreamHandler()]
+    )
+
+logger = logging.getLogger("converter_logger")
 
 
 def add_secret(html_path: Path, secret: str) -> str:
@@ -78,7 +88,7 @@ def access_denied() -> HTMLResponse:
 def translate(word: str, secret: Optional[str] = None) -> HTMLResponse:
     if not check_access(secret):
         return access_denied()
-    print(f"get word: {word}")
+    logger.info(f"get word: {word}")
     result = translator.translate(word)
     with open(directory_path / "translation.html") as file:
         template = Template(file.read())

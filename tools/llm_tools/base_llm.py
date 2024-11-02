@@ -1,9 +1,12 @@
+import logging
 from abc import ABC
 from pathlib import Path
 
 from jinja2 import Template
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
+
+logger = logging.getLogger(__name__)
 
 
 class LLMResponse(BaseModel):
@@ -38,7 +41,7 @@ class BaseLLM(ABC):
             result.usage_metadata["input_tokens"] * self.price_input
             + result.usage_metadata["output_tokens"] * self.price_output
         )
-        print(f"${price * 1000:0.2f} for 1000 calls \n\n\n")
+        logger.info(f"${price * 1000:0.2f} for 1000 calls \n\n\n")
         return LLMResponse(content=result.content, price=price)
 
     def fix_json(self, input_text: str, error: str, schema: str) -> LLMResponse:

@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from dotenv import dotenv_values
@@ -6,7 +7,7 @@ from langchain_openai import ChatOpenAI
 
 config_path = Path(__file__).parent.parent.parent / ".env"
 config = dotenv_values(config_path)
-
+logger = logging.getLogger(__name__)
 api_key = config["OPENAI_API_KEY"]
 
 llm = ChatOpenAI(api_key=api_key, model="gpt-4o-mini")
@@ -19,4 +20,4 @@ with open(template_path) as file_:
 prompt = template.render(text="Čovek koji sa prozora baca pare i neće da sluša naređenja: Ko je Pavel Durov, osnivač Telegrama koji je uhapšen u Francuskoj")
 result = llm.invoke(prompt, temperature=0).content
 
-print(result)
+logger.info(result)

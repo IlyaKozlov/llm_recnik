@@ -2,49 +2,42 @@ import json
 import sqlite3
 from pathlib import Path
 
+from common.kv_storage import KVStorage
 from common.utils import to_cyrillic, is_latin, to_latin
 
 
-class InvertedDict:
+class InvertedDict(KVStorage):
 
     def __init__(self, file_name: str = "inverted_dict.sqlite"):
-        """
-        from https://stackoverflow.com/questions/47237807/use-sqlite-as-a-keyvalue-store
-        """
-        self.path = Path(__file__).parent.parent.parent.absolute() / file_name
-        self.conn = sqlite3.connect(self.path)
-        self.conn.execute("CREATE TABLE IF NOT EXISTS kv (key text unique, value text)")
-        size = self.conn.execute('SELECT count(*) FROM kv').fetchone()[0]
-        print(f"Size of inverted dict is {size}")
-
-    def close(self):
-        self.conn.commit()
-        self.conn.close()
+        super().__init__(file_name=file_name, table_name="inverted_dict")
 
     def get(self, key: str, default=None):
         latin = is_latin(key)
         key_cyrillic = to_cyrillic(key)
-        value = self.conn.execute('SELECT value FROM kv WHERE key = ?', (key_cyrillic,)).fetchone()
+        value = self._load(key_cyrillic)
         if value is None:
             return default
-        else:
-            value = value[0]
         value = json.loads(value)
         if latin:
             value = [to_latin(v) for v in value]
         return value
 
-    def _put_one(self, key: str, value: list):
+    @staticmethod
+    def _transform(key: str, value: list):
         key = to_cyrillic(key)
         value = [to_cyrillic(v) for v in value]
         value = json.dumps(value, ensure_ascii=False)
-        self.conn.execute('REPLACE INTO kv (key, value) VALUES (?,?)', (key, value))
+        return key, value
 
     def put(self, key: str, value: list):
-        self._put_one(key, value)
-        self.conn.commit()
+        key, value = self._transform(key, value)
+        self._save(key, value)
 
     def put_all(self, keys: list, values: list):
-        for key, value in zip(keys, values):
-            self._put_one(key, value)
-        self.conn.commit()
+        transformed_keys = []
+        transformed_values = []
+        for k, v in zip(keys, values):
+            transformed_key, transformed_value = self._transform(k, v)
+            transformed_keys.append(transformed_key)
+            transformed_values.append(transformed_value)
+        self._save_all(transformed_keys, transformed_values)
