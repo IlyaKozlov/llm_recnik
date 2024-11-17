@@ -18,7 +18,7 @@ class KVStorage(abc.ABC):
 
         logger.debug(f"Save {self.table_name} "
                      f"in file {str(self.path.absolute())}, "
-                     f"file {'not' if self.path.exists() else ''}exists")
+                     f"file {'' if self.path.exists() else 'not '}exists")
 
         self.conn = sqlite3.connect(self.path)
         self.conn.execute(

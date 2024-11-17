@@ -1,13 +1,17 @@
 import logging
 import os
+import time
+from http.client import HTTPException
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any
 
 import uvicorn
 from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from jinja2 import Template
+from fastapi.responses import StreamingResponse
 
+from datatypes.check_input import CheckInput
 from llm_tools.error_fixing import ErrorFixing
 from llm_tools.translator import Translator
 from token_utils import check_access
@@ -44,15 +48,6 @@ def root(secret: Optional[str] = None) -> HTMLResponse:
     if not check_access(secret):
         return access_denied()
     path = directory_path / "intro.html"
-    content = add_secret(path, secret)
-    return HTMLResponse(content=content)
-
-
-@app.get("/check_form")
-def check_form(secret: Optional[str] = None) -> HTMLResponse:
-    if not check_access(secret):
-        return access_denied()
-    path = directory_path / "check_form.html"
     content = add_secret(path, secret)
     return HTMLResponse(content=content)
 
@@ -113,6 +108,22 @@ def translate_json(word: str, secret: Optional[str] = None) -> JSONResponse:
 def favicon(secret: Optional[str] = None) -> FileResponse:
     path = directory_path / "mascot.ico"
     return FileResponse(path=path)
+
+
+
+@app.post("/stream")
+def streaming_post(data: CheckInput):
+    pass
+    if check_access(data.secret):
+        return StreamingResponse(error_fix.fix_stream(text=data.text), media_type="text/event-stream")
+    return access_denied()
+
+
+@app.get("/check_form")
+def for_stream(secret: Optional[str] = None):
+    with open(directory_path / "check_output_stream.html") as file:
+        template = Template(file.read())
+        return HTMLResponse(template.render(secret=secret))
 
 
 if __name__ == "__main__":

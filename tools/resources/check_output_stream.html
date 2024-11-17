@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+
+    <script type="text/javascript">
+
+      function handleIt(txt, secret) {
+
+
+        const outputDiv = document.getElementById('output');
+        outputDiv.innerHTML = ''; // Clear previous output
+
+          let data = {secret: secret, text: txt};
+
+        fetch('/stream', {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        }).then(response => {
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder("utf-8");
+
+                function read() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            console.log("Stream finished");
+                            return;
+                        }
+                        // Decode the value and append it to the output
+                        const chunk = decoder.decode(value, { stream: true });
+                        outputDiv.innerHTML += chunk; // Append new data
+                        outputDiv.scrollTop = outputDiv.scrollHeight; // Scroll to the bottom
+                        read(); // Read the next chunk
+                    });
+                }
+
+                read(); // Start reading the stream
+            })
+            .catch(error => {
+                console.error("Error fetching the stream:", error);
+            });
+
+      }
+
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Rečnik</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            max-width: 280px;
+        }
+    </style>
+</head>
+<body>
+
+<form action="javascript:handleIt(text.value, secret.value)" method="POST">
+    <p><label for="text">text:</label>
+        <textarea id="text" name="text" cols="45" rows="10" required> </textarea>
+    <input type="submit" value="check">
+    <input type="hidden" id="secret" name="secret" value="{{secret}}" />
+    </p>
+
+</form>
+<p id="output"> Out </p>
+
+<h2> Ispravlena </h2>
+
+
+
+
+</body>
+</html>
