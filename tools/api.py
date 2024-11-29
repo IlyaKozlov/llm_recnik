@@ -12,6 +12,7 @@ from jinja2 import Template
 from fastapi.responses import StreamingResponse
 
 from datatypes.check_input import CheckInput
+from datatypes.translate_input import TranslateInput
 from llm_tools.error_fixing import ErrorFixing
 from llm_tools.translator import Translator
 from token_utils import check_access
@@ -28,11 +29,13 @@ error_fix = ErrorFixing(api_key=api_key)
 
 
 logging.basicConfig(
-        level=logging.INFO if os.getenv("DEBUG", "false").lower() != "true" else logging.DEBUG,
-        format="%(asctime)s - %(name)s - [%(levelname)s] - %(message)s",
-        force=True,
-        handlers=[logging.StreamHandler()]
-    )
+    level=(
+        logging.INFO if os.getenv("DEBUG", "false").lower() != "true" else logging.DEBUG
+    ),
+    format="%(asctime)s - %(name)s - [%(levelname)s] - %(message)s",
+    force=True,
+    handlers=[logging.StreamHandler()],
+)
 
 logger = logging.getLogger("converter_logger")
 
@@ -53,7 +56,9 @@ def root(secret: Optional[str] = None) -> HTMLResponse:
 
 
 @app.post("/check")
-def check(text: str = Form(...), secret: Optional[str] = Form(default=None)) -> HTMLResponse:
+def check(
+    text: str = Form(...), secret: Optional[str] = Form(default=None)
+) -> HTMLResponse:
     if not check_access(secret):
         return access_denied()
     text_with_fix = error_fix.fix(text=text)
@@ -88,12 +93,25 @@ def translate(word: str, secret: Optional[str] = None) -> HTMLResponse:
     with open(directory_path / "translation.html") as file:
         template = Template(file.read())
 
-    return HTMLResponse(template.render(word=word,
-                                        norm=result.normal_form,
-                                        explanation=result.explanation,
-                                        translation=result.translation,
-                                        example=result.examples
-                                        ))
+    return HTMLResponse(
+        template.render(
+            word=word,
+            norm=result.normal_form,
+            explanation=result.explanation,
+            translation=result.translation,
+            example=result.examples,
+        )
+    )
+
+
+@app.post("/translate_stream")
+def translate(parameters: TranslateInput) -> StreamingResponse:
+    if not check_access(parameters.secret):
+        return access_denied()
+    return StreamingResponse(
+        translator.translate_stream(text=parameters.word),
+        media_type="text/event-stream",
+    )
 
 
 @app.get("/translate_json")
@@ -110,12 +128,13 @@ def favicon(secret: Optional[str] = None) -> FileResponse:
     return FileResponse(path=path)
 
 
-
-@app.post("/stream")
+@app.post("/stream_fix_text")
 def streaming_post(data: CheckInput):
     pass
     if check_access(data.secret):
-        return StreamingResponse(error_fix.fix_stream(text=data.text), media_type="text/event-stream")
+        return StreamingResponse(
+            error_fix.fix_stream(text=data.text), media_type="text/event-stream"
+        )
     return access_denied()
 
 

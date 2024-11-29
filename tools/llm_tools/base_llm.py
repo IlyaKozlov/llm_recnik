@@ -1,10 +1,12 @@
 import logging
 from abc import ABC
 from pathlib import Path
+from typing import Iterator
 
 from jinja2 import Template
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
+from langchain_core.messages.base import BaseMessageChunk
 
 logger = logging.getLogger(__name__)
 
@@ -50,3 +52,15 @@ class BaseLLM(ABC):
             template = Template(file.read())
         prompt = template.render(json=input_text, error=error, schema=schema)
         return self.call_llm(prompt)
+
+    def _yield_stream(self, stream: Iterator[BaseMessageChunk]) -> Iterator[str]:
+        output = ""
+        right = 0
+        for item in stream:
+            output += item.content
+            text_out = output.replace("```html", "").replace("`", "")
+            text_out_patch = text_out[right:]
+            if text_out_patch.endswith("\n"):
+                yield text_out_patch
+                right = len(text_out)
+

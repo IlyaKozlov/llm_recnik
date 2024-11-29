@@ -15,8 +15,7 @@ class ErrorFixing(BaseLLM):
     def fix_stream(self, text: str) -> Iterator[str]:
         prompt = self._get_prompt(text)
         stream = self.llm.stream(prompt)
-        for item in stream:
-            yield item.content
+        yield from self._yield_stream(stream)
 
     def _get_prompt(self, text: str) -> str:
         if self._is_latin(text):

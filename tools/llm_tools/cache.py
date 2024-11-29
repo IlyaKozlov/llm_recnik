@@ -12,7 +12,10 @@ class Cache(KVStorage):
         if value_json is None:
             return default
         else:
-            return TranslateResponse.model_validate_json(value_json)
+            try:
+                return TranslateResponse.model_validate_json(value_json)
+            except ValueError:
+                return default
 
     def put(self, key: str, value: TranslateResponse):
         value_json = value.model_dump_json()

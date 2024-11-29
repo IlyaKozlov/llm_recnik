@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import Iterator
 
 from jinja2 import Template
 
@@ -66,3 +67,16 @@ class Translator(BaseLLM):
         context = context.replace(text, text.upper())
         logger.debug(context)
         return context
+
+    def translate_stream(self, text: str) -> Iterator[str]:
+        context = self._get_context(text)
+        if self._is_latin(text):
+            dir_path = self.prompt_latin
+        else:
+            dir_path = self.prompt_cyrillic
+        path = dir_path / "dictionary_stream.jinja"
+        with open(path, "r") as file:
+            template = Template(file.read())
+        prompt = template.render(text=text, context=context)
+        stream = self.llm.stream(prompt)
+        yield from self._yield_stream(stream)
