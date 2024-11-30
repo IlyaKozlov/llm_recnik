@@ -1,5 +1,5 @@
 from common.kv_storage import KVStorage
-from datatypes.translate_response import TranslateResponse
+from datatypes.translate_response import TranslateResponse, current_version
 
 
 class Cache(KVStorage):
@@ -13,9 +13,12 @@ class Cache(KVStorage):
             return default
         else:
             try:
-                return TranslateResponse.model_validate_json(value_json)
+                value = TranslateResponse.model_validate_json(value_json)
+                if value.version == current_version:
+                    return value
             except ValueError:
-                return default
+                pass
+        return default
 
     def put(self, key: str, value: TranslateResponse):
         value_json = value.model_dump_json()

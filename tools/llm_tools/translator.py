@@ -5,9 +5,11 @@ from typing import Iterator
 from jinja2 import Template
 
 from context_tools.inverted_dict import InvertedDict
-from datatypes.translate_response import TranslateResponse
+from datatypes.translate_response import TranslateResponse, current_version
 from llm_tools.base_llm import BaseLLM
 from llm_tools.cache import Cache
+
+from llm_tools.stream_wrapper import StreamWrapper
 
 logger = logging.getLogger(__name__)
 
@@ -16,46 +18,6 @@ class Translator(BaseLLM):
 
     def __init__(self, api_key: str):
         super().__init__(api_key)
-
-    def translate(self, text: str) -> TranslateResponse:
-        cache = Cache()
-        cached = cache.get(text)
-        if cached is None:
-            logger.info("Not found in cache")
-            llm_response = self._translate_with_llm(text)
-            cache.put(key=text, value=llm_response)
-            return llm_response
-        else:
-            logger.info("Got from cache")
-            return cached
-
-    def _translate_with_llm(self, text: str) -> TranslateResponse:
-        context = self._get_context(text)
-
-        if self._is_latin(text):
-            dir_path = self.prompt_latin
-        else:
-            dir_path = self.prompt_cyrillic
-        path = dir_path / "dictionary.jinja"
-        with open(path, "r") as file:
-            template = Template(file.read())
-        prompt = template.render(text=text, context=context)
-        result = self.call_llm(prompt)
-        price = result.price
-
-        logger.debug(result.content)
-
-        try:
-            TranslateResponse.model_validate_json(result.content)
-        except Exception as error:
-            logger.debug(f"try to fix json {error}")
-            result = self.fix_json(
-                result.content,
-                error=str(error),
-                schema=TranslateResponse.schema_json(indent=2),
-            )
-            price += result.price
-        return TranslateResponse.model_validate_json(result.content)
 
     def _get_context(self, text: str) -> str:
         context_db = InvertedDict()
@@ -69,14 +31,29 @@ class Translator(BaseLLM):
         return context
 
     def translate_stream(self, text: str) -> Iterator[str]:
-        context = self._get_context(text)
-        if self._is_latin(text):
+        cache = Cache()
+        value = cache.get(text.lower())
+        if value is None or value.version != current_version:
+            logger.info("Read response from llm")
+            return self._from_llm(text)
+        else:
+            logger.info("Read response from cache")
+            return [value.html].__iter__()
+
+    def _from_llm(self, word: str) -> Iterator[str]:
+        context = self._get_context(word)
+        if self._is_latin(word):
             dir_path = self.prompt_latin
         else:
             dir_path = self.prompt_cyrillic
         path = dir_path / "dictionary_stream.jinja"
         with open(path, "r") as file:
             template = Template(file.read())
-        prompt = template.render(text=text, context=context)
-        stream = self.llm.stream(prompt)
+        prompt = template.render(text=word, context=context)
+        stream = StreamWrapper(self.llm.stream(prompt))
         yield from self._yield_stream(stream)
+        text = "".join(m.content for m in stream.cache)
+        html = "\n".join(line for line in text.splitlines() if not line.strip().startswith("```"))
+        to_cache = TranslateResponse(html=html, version=current_version)
+        cache = Cache()
+        cache.put(key=word.lower(), value=to_cache)

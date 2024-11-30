@@ -84,26 +84,6 @@ def access_denied() -> HTMLResponse:
         return HTMLResponse(content=template.render(maintainer=contacts))
 
 
-@app.get("/translate")
-def translate(word: str, secret: Optional[str] = None) -> HTMLResponse:
-    if not check_access(secret):
-        return access_denied()
-    logger.info(f"get word: {word}")
-    result = translator.translate(word)
-    with open(directory_path / "translation.html") as file:
-        template = Template(file.read())
-
-    return HTMLResponse(
-        template.render(
-            word=word,
-            norm=result.normal_form,
-            explanation=result.explanation,
-            translation=result.translation,
-            example=result.examples,
-        )
-    )
-
-
 @app.post("/translate_stream")
 def translate(parameters: TranslateInput) -> StreamingResponse:
     if not check_access(parameters.secret):
@@ -112,14 +92,6 @@ def translate(parameters: TranslateInput) -> StreamingResponse:
         translator.translate_stream(text=parameters.word),
         media_type="text/event-stream",
     )
-
-
-@app.get("/translate_json")
-def translate_json(word: str, secret: Optional[str] = None) -> JSONResponse:
-    if not check_access(secret):
-        return JSONResponse(content={"status": "access denied"}, status_code=403)
-    result = translator.translate(word)
-    return JSONResponse(content=result)
 
 
 @app.get("/favicon.ico")

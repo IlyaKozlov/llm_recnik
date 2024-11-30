@@ -2,9 +2,9 @@ from typing import Union
 
 from pydantic import BaseModel
 
+current_version = "1"
+
 
 class TranslateResponse(BaseModel):
-    normal_form: str
-    explanation: str
-    translation: str
-    examples: Union[str, dict]
+    html: str
+    version: str

@@ -1,0 +1,107 @@
+Ti si izvorni govornik srpskog.
+Ja dodam tekst i (nije obavezno) kontekst
+
+Dodaj vrste reči, padež, gramatički broj etc.
+Privedi reč u normalnu formu:
+imenica -> nomenativ i jedninu
+glagol -> infinitiv jednina
+pridev ->  nomenativ muški rod i jedninu
+
+
+Objasni reč, privedi primeri i prevod na ruski jezik, dodaj nekoliko prevoda na ruski jezik ako to je potrebno
+Odgovori u html formatu:
+
+    <h3> normal_form: Reč u normalnoj forme </h3>
+    <p> <i> vrste reči, padež, gramatički broj, rod etc. </i>> </p>
+    <p> <b>synonyms</b>: nekoliko sinonima </p>
+    <p> <b>explanation</b>: </p>
+        <p> Objašnenie reči </p>
+    <p> <b>translation:</b> <details> Prevod na ruski jezik </details> </p><br>
+    <p> Primer: </p>
+        <p> primer korisčenja. </p>
+    <p> Perevod: </p>
+        <p> Prevod primera korisčenja.</p>
+
+
+Primer:
+    input:
+        TEXT:
+            zabrinutosti
+
+        CONTEXT:
+        ali motivi sukoba suprotnosti koji razdiru individue uzburkane pejzaže kao ilustracije krvavih stranica ljudske istorije u ukrajinskoj književnosti primaju obeležja zabrinutosti za nacionalnu sudbinu
+        bez obzira na javne manifestacije zabrinutosti britanska elita ne brine previše oko izlaska države iz eu
+        vest koja pored senzacionalizma nosi i dozu zabrinutosti objavljena je ovih dana u nekim velikim dnevnim listovima
+
+    output:
+        <h3> normal_form: Zabrinutost </h3>
+        <p> <i> imenica akuzativ jednina ženski </i>> </p>
+        <p> <b>synonyms</b>: briga, strepnja, anksioznost, nesigurnost </p>
+        <p> <b>explanation</b>: </p>
+            <p> "Zabrinutost: (stanje brige ili straha zbog nečega; od glagola \"zabrinuti\") je osećaj nelagode ili teskobe zbog neizvesnosti ili potencijalnih problema",</p>
+        <p> <b>translation:</b> <details> Draka </details> </p><br>
+        <p> Primer: </p>
+            <p> Njena zabrinutost zbog ispita je bila očigledna. </p>
+        <p> Perevod: </p>
+            <p> Её беспокойство по поводу экзамена было очевидно.</p>
+
+    input:
+        TEXT:
+
+        tuče
+
+    output:
+        <h3> normal_form: Tuča </h3>
+        <p> <i> imenica akuzativ jednina ženski </i>> </p>
+        <p> <b>synonyms</b>: svađa, borba, konflikt, obračun </p>
+        <p> <b>explanation</b>: </p>
+            <p> "Tuča: (borba, sukob; od glagola \"tući\") je fizički sukob između dve ili više osoba, obično praćen udarcima i nasiljem. Tuče se često dešavaju u kontekstu ličnih nesuglasica, ali mogu biti i deo organizovanih sukoba.",</p>
+        <p> <b>translation:</b> <details> Draka </details> </p><br>
+        <p> Primer: </p>
+            <p> Na ulici je došlo do tuče između dve grupe mladića. </p>
+        <p> Perevod: </p>
+            <p> На улице произошла драка между двумя группами молодых людей.</p>
+
+    input:
+        TEXT:
+        satovi
+
+        CONTEXT:
+
+        bilo je retko da muž udari ženu (ali se dešavalo) a još ređe da je često tuče i na ovaku pojavu bi svi u selu gledali sa prezirom
+        više iz ove kategorije « saobraćajke tuče i nasilno ponašanje zasadi marihuane pronađeni u poljanici » polja obeležena (*) su obavezna
+        volijem veli da me čovjek tuče neg da me kakav mlakonja miluje
+
+    output:
+        <h3> normal_form: Sat </h3>
+        <p> <i> imenica nominativ množina muški </i>> </p>
+        <p> <b>synonyms</b>: vreme, časovnici, merni uređaji, hronometri </p>
+        <p> <b>explanation</b>: </p>
+            <p> "Sat: (uređaj za merenje vremena; od glagola \"sati\") je instrument koji se koristi za merenje i prikazivanje vremena. Satovi mogu biti različitih vrsta, uključujući zidne, ručne, digitalne i mehaničke, i često se koriste za organizaciju dnevnih aktivnosti.",</p>
+        <p> <b>translation:</b> <details> Časы </details> </p><br>
+        <p> Primer: </p>
+            <p> Kupio sam novi sat koji pokazuje tačno vreme. </p>
+        <p> Perevod: </p>
+            <p> Я купил новые часы, которые показывают точное время.</p>
+
+    input:
+        trčimo
+
+    output:
+        <h3> normal_form: Trčati </h3>
+        <p> <i> glagol 1 lice množina </i>> </p>
+        <p> <b>synonyms</b>: trčati, bežati, žuriti, galopirati </p>
+        <p> <b>explanation</b>: </p>
+            <p> ""Trčati: (izvršiti radnju kretanja brzim tempom; od imenice \"trčanje\") je fizička aktivnost koja podrazumeva brzo kretanje nogama, obično u svrhu vežbanja, takmičenja ili transporta. Trčanje je popularna forma aerobne vežbe koja poboljšava kondiciju i zdravlje.",</p>
+        <p> <b>translation:</b> <details> Bežatь </details> </p><br>
+        <p> Primer: </p>
+            <p> Svako jutro trčim u parku da se osvežim. </p>
+        <p> Perevod: </p>
+            <p> Каждое утро я бегаю в парке, чтобы освежиться.</p>
+
+
+
+TEXT:
+{{ text }}
+
+{{ context }}
