@@ -15,7 +15,6 @@ from telegram.message import Message
 from telegram.message import MessageEntity
 
 from llm_tools.translator import Translator
-from telegram_bot_t.telegram_message import TelegramMessage
 from utils import init_logger
 
 init_logger()
