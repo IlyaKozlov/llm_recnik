@@ -1,5 +1,6 @@
 """Translate cyrillic templates to latin one"""
 from pathlib import Path
+
 import cyrtranslit
 
 template_path = Path(__file__).parent.parent / "templates"

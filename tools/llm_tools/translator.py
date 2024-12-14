@@ -1,4 +1,3 @@
-import json
 import logging
 from typing import Iterator
 
@@ -8,7 +7,6 @@ from context_tools.inverted_dict import InvertedDict
 from datatypes.translate_response import TranslateResponse, current_version
 from llm_tools.base_llm import BaseLLM
 from llm_tools.cache import Cache
-
 from llm_tools.stream_wrapper import StreamWrapper
 
 logger = logging.getLogger(__name__)
@@ -53,7 +51,9 @@ class Translator(BaseLLM):
         stream = StreamWrapper(self.llm.stream(prompt))
         yield from self._yield_stream(stream)
         text = "".join(m.content for m in stream.cache)
-        html = "\n".join(line for line in text.splitlines() if not line.strip().startswith("```"))
+        html = "\n".join(
+            line for line in text.splitlines() if not line.strip().startswith("```")
+        )
         to_cache = TranslateResponse(html=html, version=current_version)
         cache = Cache()
         cache.put(key=word.lower(), value=to_cache)

@@ -3,7 +3,6 @@ from typing import Iterable, TypeVar, List
 
 import cyrtranslit
 
-
 T = TypeVar('T')
 
 
@@ -26,7 +25,7 @@ def to_latin(text: str) -> str:
     return cyrtranslit.to_latin(text, "sr")
 
 
-def batch(iterable: Iterable[T], size: int) -> Iterable[List[T]]:
+def get_batch(iterable: Iterable[T], size: int) -> Iterable[List[T]]:
     chunk = []
     for item in iterable:
         chunk.append(item)

@@ -27,4 +27,3 @@ class ErrorFixing(BaseLLM):
             template = Template(file.read())
         prompt = template.render(text=text)
         return prompt
-

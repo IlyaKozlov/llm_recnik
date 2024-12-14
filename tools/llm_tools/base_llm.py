@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Iterator
 
 from jinja2 import Template
+from langchain_core.messages.base import BaseMessageChunk
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel
-from langchain_core.messages.base import BaseMessageChunk
 
 logger = logging.getLogger(__name__)
 
@@ -63,4 +63,3 @@ class BaseLLM(ABC):
             if text_out_patch.endswith("\n"):
                 yield text_out_patch
                 right = len(text_out)
-

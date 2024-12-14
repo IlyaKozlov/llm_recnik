@@ -1,21 +1,20 @@
 import logging
 import os
-import time
-from http.client import HTTPException
 from pathlib import Path
-from typing import Optional, Any
+from typing import Optional
 
 import uvicorn
 from fastapi import FastAPI, Form
-from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
-from jinja2 import Template
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.responses import StreamingResponse
+from jinja2 import Template
 
 from datatypes.check_input import CheckInput
 from datatypes.translate_input import TranslateInput
 from llm_tools.error_fixing import ErrorFixing
 from llm_tools.translator import Translator
 from token_utils import check_access
+from utils import init_logger
 
 PORT = os.getenv("PORT", 8924)
 app = FastAPI()
@@ -28,14 +27,7 @@ translator = Translator(api_key=api_key)
 error_fix = ErrorFixing(api_key=api_key)
 
 
-logging.basicConfig(
-    level=(
-        logging.INFO if os.getenv("DEBUG", "false").lower() != "true" else logging.DEBUG
-    ),
-    format="%(asctime)s - %(name)s - [%(levelname)s] - %(message)s",
-    force=True,
-    handlers=[logging.StreamHandler()],
-)
+init_logger()
 
 logger = logging.getLogger("converter_logger")
 
