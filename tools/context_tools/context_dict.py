@@ -4,10 +4,11 @@ from common.kv_storage import KVStorage
 from common.utils import to_cyrillic, is_latin, to_latin
 
 
-class InvertedDict(KVStorage):
+class ContextDict(KVStorage):
 
-    def __init__(self, file_name: str = "inverted_dict.sqlite"):
-        super().__init__(file_name=file_name, table_name="inverted_dict")
+    def __init__(self, table_name: str = "inverted_dict"):
+        file_name = f"{table_name}.sqlite"
+        super().__init__(file_name=file_name, table_name=table_name)
 
     def get(self, key: str, default=None):
         latin = is_latin(key)

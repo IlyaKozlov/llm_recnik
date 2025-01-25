@@ -12,6 +12,7 @@ def is_latin(text: str) -> bool:
     """
     cyrillic = "ертзуиопшђасдфгхјклчћжцвбнмђљњјџ"
     latin = "ǉǌertzuiopšđasdfghjklčćžǆcvbnm"
+    text = text.lower()
     cyrillic_cnt = sum(1 if L in text else 0 for L in cyrillic)
     latin_cnt = sum(1 if L in text else 0 for L in latin)
     return latin_cnt >= cyrillic_cnt

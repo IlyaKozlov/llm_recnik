@@ -3,7 +3,7 @@ from typing import Iterator
 
 from jinja2 import Template
 
-from context_tools.inverted_dict import InvertedDict
+from context_tools.context_dict import ContextDict
 from datatypes.translate_response import TranslateResponse, current_version
 from llm_tools.base_llm import BaseLLM
 from llm_tools.cache import Cache
@@ -18,13 +18,20 @@ class Translator(BaseLLM):
         super().__init__(api_key)
 
     def _get_context(self, text: str) -> str:
-        context_db = InvertedDict()
+        context_db = ContextDict(table_name="inverted_dict")
         context_list = context_db.get(text, [])
         if len(context_list) == 0:
             context = ""
         else:
             context = "\n\nCONTEXT:\n" + "\n".join(context_list)
         context = context.replace(text, text.upper())
+
+        explanatory_db = ContextDict(table_name="explanatory_dict")
+        explanation = explanatory_db.get(text, [])
+        if len(explanation) == 0:
+            context += ""
+        else:
+            context += "\n\nEXPLANATION FROM DICTIONARY:\n" + "\n".join(explanation)
         logger.debug(context)
         return context
 
